@@ -6,7 +6,6 @@ import PlanDisplay from '@/components/PlanDisplay';
 import Landing from '@/components/Landing';
 import Pricing from '@/components/Pricing';
 import { Gender, Equipment, UserInput, ParetoResult } from '@/types';
-import { analyzeAndGeneratePlan, generateVisionImage } from '@/services/geminiService';
 
 type AppStep = 'landing' | 'pricing' | 'auth' | 'payment' | 'input' | 'loading' | 'result' | 'key';
 
@@ -82,10 +81,26 @@ export default function Page() {
       setTimeout(() => setLoadingMessage("Génération du plan alimentaire 80/20..."), 4000);
       setTimeout(() => setLoadingMessage("Génération du rendu HD..."), 6000);
 
-      const [analysis, visionUrl] = await Promise.all([
-        analyzeAndGeneratePlan(userInput),
-        generateVisionImage(userInput)
+      const [analysisRes, visionRes] = await Promise.all([
+        fetch('/api/analyze', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(userInput)
+        }),
+        fetch('/api/generate-vision', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(userInput)
+        })
       ]);
+
+      if (!analysisRes.ok || !visionRes.ok) {
+        throw new Error('API request failed');
+      }
+
+      const analysis = await analysisRes.json();
+      const visionData = await visionRes.json();
+      const visionUrl = visionData.image;
 
       setResult({ 
         ...analysis, 
