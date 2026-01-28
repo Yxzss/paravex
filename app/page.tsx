@@ -13,6 +13,8 @@ const STRIPE_PAYMENT_LINK = "https://buy.stripe.com/3cI3cv8mZ0CE8wo2eabfO00";
 
 export default function Page() {
   const [step, setStep] = useState<AppStep>('landing');
+  
+  console.log('[v0] Page rendered, current step:', step);
   const [authMode, setAuthMode] = useState<'login' | 'signup'>('signup');
   const [hasPaid, setHasPaid] = useState(false);
   const [loadingMessage, setLoadingMessage] = useState('Analyse biométrique...');
@@ -126,8 +128,14 @@ export default function Page() {
     setStep('input');
   };
 
-  if (step === 'landing') return <Landing onStart={() => setStep('pricing')} />;
-  if (step === 'pricing') return <Pricing onSelect={() => setStep('auth')} />;
+  if (step === 'landing') return <Landing onStart={() => {
+    console.log('[v0] Landing onStart triggered, changing step to pricing');
+    setStep('pricing');
+  }} />;
+  if (step === 'pricing') return <Pricing onSelect={() => {
+    console.log('[v0] Pricing onSelect triggered, changing step to auth');
+    setStep('auth');
+  }} />;
 
   if (step === 'auth') {
     return (

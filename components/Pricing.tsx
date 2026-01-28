@@ -6,6 +6,7 @@ interface Props {
 }
 
 const Pricing: React.FC<Props> = ({ onSelect }) => {
+  console.log('[v0] Pricing component mounted, onSelect callback:', typeof onSelect);
   return (
     <div className="min-h-screen bg-[#030303] py-32 px-6">
       <div className="max-w-3xl mx-auto">
@@ -45,7 +46,10 @@ const Pricing: React.FC<Props> = ({ onSelect }) => {
               <p className="text-[10px] font-mono-geist text-indigo-400 uppercase tracking-widest mb-8 italic">Paiement unique • Accès à vie</p>
               
               <button 
-                onClick={onSelect}
+                onClick={() => {
+                  console.log('[v0] Pricing button clicked - calling onSelect');
+                  onSelect();
+                }}
                 className="w-full md:w-64 py-6 bg-white text-black rounded-2xl font-black uppercase tracking-[0.2em] text-xs hover:scale-105 transition-all shadow-2xl shadow-white/5"
               >
                 Commencer le Scan

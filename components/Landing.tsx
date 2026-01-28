@@ -34,6 +34,7 @@ const TestimonialCard = ({ name, text }: { name: string, text: string }) => (
 );
 
 const Landing: React.FC<Props> = ({ onStart }) => {
+  console.log('[v0] Landing component mounted, onStart callback:', typeof onStart);
   const scrollRef = useRef<HTMLDivElement>(null);
 
   const scroll = (direction: 'left' | 'right') => {
@@ -61,7 +62,13 @@ const Landing: React.FC<Props> = ({ onStart }) => {
           <span className="font-bold tracking-tighter text-xl uppercase">PARAXE</span>
         </div>
         <div className="flex items-center gap-8">
-          <button onClick={onStart} className="px-6 py-2 glass rounded-full text-[10px] font-bold uppercase tracking-widest hover:bg-white hover:text-black transition-all">
+          <button 
+            onClick={() => {
+              console.log('[v0] Nav button clicked');
+              onStart();
+            }} 
+            className="px-6 py-2 glass rounded-full text-[10px] font-bold uppercase tracking-widest hover:bg-white hover:text-black transition-all"
+          >
             Accès Scanner
           </button>
         </div>
@@ -84,7 +91,10 @@ const Landing: React.FC<Props> = ({ onStart }) => {
 
         <div className="flex flex-col items-center gap-8">
           <button 
-            onClick={onStart}
+            onClick={() => {
+              console.log('[v0] Landing button clicked - calling onStart');
+              onStart();
+            }}
             className="group relative px-16 py-8 bg-white text-black font-black text-xl rounded-2xl hover:scale-105 transition-all shadow-2xl shadow-indigo-500/10"
           >
             DÉCOUVRE TON POTENTIEL
@@ -250,6 +260,7 @@ const Landing: React.FC<Props> = ({ onStart }) => {
           <div className="relative z-20 inline-block">
             <button 
               onClick={(e) => {
+                console.log('[v0] Final CTA button clicked');
                 e.preventDefault();
                 onStart();
               }}
